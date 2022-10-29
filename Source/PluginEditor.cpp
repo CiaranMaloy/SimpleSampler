@@ -43,5 +43,29 @@ void HelloSamplerAudioProcessorEditor::resized()
 {
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
-    mLoadButton.setBounds(getWidth()/2-50, getHeight()/2-50, 100, 100);
+    mLoadButton.setBounds(getWidth()/2-50, getHeight()/2-50, 100, 100); 
+}
+
+bool HelloSamplerAudioProcessorEditor::isInterestedInFileDrag(const juce::StringArray& files)
+{
+    for (auto file : files)
+    {
+        if (file.contains(".wav") || file.contains(".mp3") || file.contains(".aiff"))
+        {
+            return true;
+        }
+    }
+    
+    return false;
+}
+
+void HelloSamplerAudioProcessorEditor::filesDropped(const juce::StringArray &files, int x, int y)
+{
+    for (auto file : files)
+    {
+        if (isInterestedInFileDrag(files))
+        {
+            //load this file
+        }
+    }
 }
