@@ -58,10 +58,17 @@ public:
     
     //========
     void loadFile();
+    void loadFile(const juce::String& pathToFile);
+    
+    int getNumSamplerSounds() {return mSampler.getNumSounds();}
+    
+    // mWaveForm is private
+    juce::AudioBuffer<float>& getWaveForm() { return mWaveForm; }
 
 private:
     juce::Synthesiser mSampler;
     const int mNumVoices {3};
+    juce::AudioBuffer<float> mWaveForm;
     
     juce::AudioFormatManager mFormatManager;
     juce::AudioFormatReader* mFormatReader {nullptr};

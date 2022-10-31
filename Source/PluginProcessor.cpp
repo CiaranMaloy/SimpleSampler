@@ -173,7 +173,7 @@ void HelloSamplerAudioProcessor::setStateInformation (const void* data, int size
     // whose contents will have been created by the getStateInformation() call.
 }
 
-//===========
+//=========== // part of this should be called during the drag and drop
 void HelloSamplerAudioProcessor::loadFile()
 {
     juce::FileChooser chooser("Load File");
@@ -183,6 +183,36 @@ void HelloSamplerAudioProcessor::loadFile()
         mFormatReader = mFormatManager.createReaderFor(file);
     }
     
+    // add the sound to the sampler
+    juce::BigInteger range;
+    range.setRange(0, 128, true);
+    double attack = 0.1;
+    double release = 0.1;
+    mSampler.addSound(new juce::SamplerSound("Sample", *mFormatReader, range, 60, attack, release, 10.0));
+}
+
+void HelloSamplerAudioProcessor::loadFile(const juce::String& pathToFile)
+{
+    // if there is already a sond in the sampler then clear it
+    mSampler.clearSounds();
+    
+    auto file = juce::File(pathToFile);
+    mFormatReader = mFormatManager.createReaderFor(file);
+    
+    //
+    // get the waveform from the sample
+    int sampleLength = static_cast<int>(mFormatReader->lengthInSamples);
+    mWaveForm.setSize(1, sampleLength);
+    mFormatReader->read(&mWaveForm, 0, sampleLength, 0, true, false);
+    
+//    // check that the waveform has been written properly
+//    auto buffer = mWaveForm.getReadPointer(0);
+//    for (int sample=0; sample < mWaveForm.getNumSamples(); ++sample)
+//    {
+//        DBG(buffer[sample]);
+//    }
+    
+    //
     juce::BigInteger range;
     range.setRange(0, 128, true);
     double attack = 0.1;
