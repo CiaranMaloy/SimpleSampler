@@ -33,6 +33,9 @@ private:
     juce::TextButton mLoadButton{"Load"};
     std::vector<float> mAudioPoints;
     bool mShouldBePainting {false};
+    
+    juce::Slider mAttackSlider, mDecaySlider, mSustainSlider, mReleaseSlider; // m because they're private globals of the class
+    juce::Label mAttackLabel, mDecayLabel, mSustainLabel, mReleaseLabel;
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
     HelloSamplerAudioProcessor& audioProcessor;
