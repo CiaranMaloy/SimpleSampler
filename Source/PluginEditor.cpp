@@ -21,11 +21,13 @@ HelloSamplerAudioProcessorEditor::HelloSamplerAudioProcessorEditor (HelloSampler
     };
     
     // set the slider look and feel
+    // these should all be functions really ---- 
     // Attack slider
     mAttackSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
     mAttackSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 50, 20);
     mAttackSlider.setRange(0.0f, 5.0f, 0.01f); // alwasy set the increment because otherwise things get weird
     mAttackSlider.setColour(juce::Slider::ColourIds::thumbColourId, juce::Colours::red);
+    mAttackSlider.addListener(this); // this refers to the editor and makes it a listener
     addAndMakeVisible(mAttackSlider);
     
     mAttackLabel.setFont(10.f);
@@ -38,6 +40,7 @@ HelloSamplerAudioProcessorEditor::HelloSamplerAudioProcessorEditor (HelloSampler
     mDecaySlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 50, 20);
     mDecaySlider.setRange(0.0f, 5.0f, 0.01f); // alwasy set the increment because otherwise things get weird
     mDecaySlider.setColour(juce::Slider::ColourIds::thumbColourId, juce::Colours::green);
+    mDecaySlider.addListener(this);
     addAndMakeVisible(mDecaySlider);
     
     mDecayLabel.setFont(10.f);
@@ -50,6 +53,7 @@ HelloSamplerAudioProcessorEditor::HelloSamplerAudioProcessorEditor (HelloSampler
     mSustainSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 50, 20);
     mSustainSlider.setRange(0.0f, 1.0f, 0.01f); // alwasy set the increment because otherwise things get weird
     mSustainSlider.setColour(juce::Slider::ColourIds::thumbColourId, juce::Colours::blue);
+    mSustainSlider.addListener(this);
     addAndMakeVisible(mSustainSlider);
     
     mSustainLabel.setFont(10.f);
@@ -62,6 +66,7 @@ HelloSamplerAudioProcessorEditor::HelloSamplerAudioProcessorEditor (HelloSampler
     mReleaseSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 50, 20);
     mReleaseSlider.setRange(0.0f, 1.0f, 0.01f); // alwasy set the increment because otherwise things get weird
     mReleaseSlider.setColour(juce::Slider::ColourIds::thumbColourId, juce::Colours::yellow);
+    mReleaseSlider.addListener(this);
     addAndMakeVisible(mReleaseSlider);
     
     mReleaseLabel.setFont(10.f);
@@ -180,5 +185,25 @@ void HelloSamplerAudioProcessorEditor::filesDropped(const juce::StringArray &fil
             mShouldBePainting = true;
             audioProcessor.loadFile(file); // i feel like there is a bug here where it'll read whatever files you give it so long as one of them is an audio file???
         }
+    }
+}
+
+void HelloSamplerAudioProcessorEditor::sliderValueChanged(juce::Slider *slider)
+{
+    if (slider == &mAttackSlider)
+    {
+        audioProcessor.attack = mAttackSlider.getValue();
+    }
+    else if (slider == &mDecaySlider)
+    {
+        audioProcessor.decay = mDecaySlider.getValue();
+    }
+    else if (slider == &mSustainSlider)
+    {
+        audioProcessor.sustain = mSustainSlider.getValue();
+    }
+    else if (slider == &mReleaseSlider)
+    {
+        audioProcessor.release = mReleaseSlider.getValue();
     }
 }

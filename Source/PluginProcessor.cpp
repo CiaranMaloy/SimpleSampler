@@ -141,6 +141,8 @@ void HelloSamplerAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
     juce::ScopedNoDenormals noDenormals;
     auto totalNumInputChannels  = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();
+    
+    getADSRValue();
 
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
@@ -218,6 +220,14 @@ void HelloSamplerAudioProcessor::loadFile(const juce::String& pathToFile)
     double attack = 0.1;
     double release = 0.1;
     mSampler.addSound(new juce::SamplerSound("Sample", *mFormatReader, range, 60, attack, release, 10.0));
+}
+
+void HelloSamplerAudioProcessor::getADSRValue()
+{    
+    DBG("Attack: " << attack);
+    DBG("Decay: " << decay);
+    DBG("Sustain: " << sustain);
+    DBG("Release: " << release);
 }
 
 //==============================================================================

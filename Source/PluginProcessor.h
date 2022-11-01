@@ -64,6 +64,10 @@ public:
     
     // mWaveForm is private
     juce::AudioBuffer<float>& getWaveForm() { return mWaveForm; }
+    
+    // adsr (primitive)
+    void getADSRValue();
+    float attack{0.0}, decay{0.0}, sustain{0.0}, release{0.0};
 
 private:
     juce::Synthesiser mSampler;
