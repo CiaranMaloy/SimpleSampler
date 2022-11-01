@@ -103,16 +103,7 @@ void HelloSamplerAudioProcessor::prepareToPlay (double sampleRate, int samplesPe
     // initialisation that you need..
     mSampler.setCurrentPlaybackSampleRate(sampleRate);
     
-    for (int i=0; i<mSampler.getNumSounds(); ++i)
-    {
-        // chec that these are sampler sounds not synthesisersounds
-        // using dynamic casting
-        if (auto sound = dynamic_cast<juce::SamplerSound*>(mSampler.getSound(i).get())) // the get method gets us the pointer sice it is of type SamplerSound pointer, and
-        {
-            // Set Envelope Parameters
-            sound->setEnvelopeParameters(mADSRParams); // no adsr parameters object
-        }
-    }
+    updateADSR();
 }
 
 void HelloSamplerAudioProcessor::releaseResources()
@@ -153,7 +144,7 @@ void HelloSamplerAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
     auto totalNumInputChannels  = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();
     
-    updateADSR();
+    //updateADSR(); - I dont think I need to do this now that it's called whenever the listener class is activated
 
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
