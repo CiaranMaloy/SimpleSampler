@@ -190,6 +190,7 @@ void HelloSamplerAudioProcessorEditor::filesDropped(const juce::StringArray &fil
 
 void HelloSamplerAudioProcessorEditor::sliderValueChanged(juce::Slider *slider)
 {
+    // you want to replace the slider listener stuff with an valueTreeState object 
     if (slider == &mAttackSlider)
     {
         audioProcessor.attack = mAttackSlider.getValue();

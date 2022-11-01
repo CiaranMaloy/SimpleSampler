@@ -102,6 +102,17 @@ void HelloSamplerAudioProcessor::prepareToPlay (double sampleRate, int samplesPe
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
     mSampler.setCurrentPlaybackSampleRate(sampleRate);
+    
+    for (int i=0; i<mSampler.getNumSounds(); ++i)
+    {
+        // chec that these are sampler sounds not synthesisersounds
+        // using dynamic casting
+        if (auto sound = dynamic_cast<juce::SamplerSound*>(mSampler.getSound(i).get())) // the get method gets us the pointer sice it is of type SamplerSound pointer, and
+        {
+            // Set Envelope Parameters
+            sound->setEnvelopeParameters(mADSRParams); // no adsr parameters object
+        }
+    }
 }
 
 void HelloSamplerAudioProcessor::releaseResources()
@@ -142,7 +153,7 @@ void HelloSamplerAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
     auto totalNumInputChannels  = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();
     
-    getADSRValue();
+    updateADSR();
 
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
@@ -219,15 +230,21 @@ void HelloSamplerAudioProcessor::loadFile(const juce::String& pathToFile)
     range.setRange(0, 128, true);
     double attack = 0.1;
     double release = 0.1;
-    mSampler.addSound(new juce::SamplerSound("Sample", *mFormatReader, range, 60, attack, release, 10.0));
+    mSampler.addSound(new juce::SamplerSound ("Sample", *mFormatReader, range, 60, attack, release, 10.0));
 }
 
-void HelloSamplerAudioProcessor::getADSRValue()
+void HelloSamplerAudioProcessor::updateADSR()
 {    
-    DBG("Attack: " << attack);
-    DBG("Decay: " << decay);
-    DBG("Sustain: " << sustain);
-    DBG("Release: " << release);
+    for (int i=0; i<mSampler.getNumSounds(); ++i)
+    {
+        // chec that these are sampler sounds not synthesisersounds
+        // using dynamic casting
+        if (auto sound = dynamic_cast<juce::SamplerSound*>(mSampler.getSound(i).get())) // the get method gets us the pointer sice it is of type SamplerSound pointer, and
+        {
+            // Set Envelope Parameters
+            sound->setEnvelopeParameters(mADSRParams); // no adsr parameters object
+        }
+    }
 }
 
 //==============================================================================

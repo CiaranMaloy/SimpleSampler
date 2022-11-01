@@ -66,13 +66,16 @@ public:
     juce::AudioBuffer<float>& getWaveForm() { return mWaveForm; }
     
     // adsr (primitive)
-    void getADSRValue();
+    void updateADSR();
     float attack{0.0}, decay{0.0}, sustain{0.0}, release{0.0};
 
 private:
+    
     juce::Synthesiser mSampler;
     const int mNumVoices {3};
     juce::AudioBuffer<float> mWaveForm;
+    
+    juce::ADSR::Parameters mADSRParams; 
     
     juce::AudioFormatManager mFormatManager;
     juce::AudioFormatReader* mFormatReader {nullptr};
