@@ -200,6 +200,7 @@ void HelloSamplerAudioProcessor::loadFile()
     double attack = 0.1;
     double release = 0.1;
     mSampler.addSound(new juce::SamplerSound("Sample", *mFormatReader, range, 60, attack, release, 10.0));
+    updateADSR();
 }
 
 void HelloSamplerAudioProcessor::loadFile(const juce::String& pathToFile)
@@ -229,6 +230,7 @@ void HelloSamplerAudioProcessor::loadFile(const juce::String& pathToFile)
     double attack = 0.1;
     double release = 0.1;
     mSampler.addSound(new juce::SamplerSound ("Sample", *mFormatReader, range, 60, attack, release, 10.0));
+    updateADSR();
 }
 
 void HelloSamplerAudioProcessor::updateADSR()
