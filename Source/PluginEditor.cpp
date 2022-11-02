@@ -13,6 +13,7 @@
 HelloSamplerAudioProcessorEditor::HelloSamplerAudioProcessorEditor (HelloSamplerAudioProcessor& p)
     : AudioProcessorEditor (&p), audioProcessor (p)
 {
+    
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
     mLoadButton.onClick = [&]() {
@@ -35,8 +36,7 @@ HelloSamplerAudioProcessorEditor::HelloSamplerAudioProcessorEditor (HelloSampler
     mAttackLabel.setJustificationType(juce::Justification::centredTop);
     mAttackLabel.attachToComponent(&mAttackSlider, false);
     
-    mAttackAttachment = // for some reason im going to stick with this weird formatting
-    std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.getAPVTS(), "Attack", mAttackSlider);
+    mAttackAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.getAPVTS(), "ATTACK", mAttackSlider);
     
     // Decay slider
     mDecaySlider.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
@@ -51,8 +51,7 @@ HelloSamplerAudioProcessorEditor::HelloSamplerAudioProcessorEditor (HelloSampler
     mDecayLabel.setJustificationType(juce::Justification::centredTop);
     mDecayLabel.attachToComponent(&mDecaySlider, false);
     
-    mDecayAttachment = // for some reason im going to stick with this weird formatting
-    std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.getAPVTS(), "Decay", mDecaySlider);
+    mDecayAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.getAPVTS(), "DECAY", mDecaySlider);
     
     // Sustain
     mSustainSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
@@ -67,8 +66,7 @@ HelloSamplerAudioProcessorEditor::HelloSamplerAudioProcessorEditor (HelloSampler
     mSustainLabel.setJustificationType(juce::Justification::centredTop);
     mSustainLabel.attachToComponent(&mSustainSlider, false);
     
-    mSustainAttachment = // for some reason im going to stick with this weird formatting
-    std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.getAPVTS(), "Sustain", mSustainSlider);
+    mSustainAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.getAPVTS(), "SUSTAIN", mSustainSlider);
     
     // Release
     mReleaseSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
@@ -83,8 +81,7 @@ HelloSamplerAudioProcessorEditor::HelloSamplerAudioProcessorEditor (HelloSampler
     mReleaseLabel.setJustificationType(juce::Justification::centredTop);
     mReleaseLabel.attachToComponent(&mReleaseSlider, false);
     
-    mReleaseAttachment = // for some reason im going to stick with this weird formatting
-    std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.getAPVTS(), "Release", mReleaseSlider);
+    mReleaseAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.getAPVTS(), "RELEASE", mReleaseSlider);
     
     //addAndMakeVisible(mLoadButton);
     setSize (600, 200);
@@ -199,26 +196,3 @@ void HelloSamplerAudioProcessorEditor::filesDropped(const juce::StringArray &fil
         }
     }
 }
-
-//void HelloSamplerAudioProcessorEditor::sliderValueChanged(juce::Slider *slider)
-//{
-//    // you want to replace the slider listener stuff with an valueTreeState object
-//    if (slider == &mAttackSlider)
-//    {
-//        audioProcessor.getADSRParams().attack = mAttackSlider.getValue();
-//    }
-//    else if (slider == &mDecaySlider)
-//    {
-//        audioProcessor.getADSRParams().decay = mDecaySlider.getValue();
-//    }
-//    else if (slider == &mSustainSlider)
-//    {
-//        audioProcessor.getADSRParams().sustain = mSustainSlider.getValue();
-//    }
-//    else if (slider == &mReleaseSlider)
-//    {
-//        audioProcessor.getADSRParams().release = mReleaseSlider.getValue();
-//    }
-//
-//    audioProcessor.updateADSR();
-//}

@@ -23,6 +23,7 @@ HelloSamplerAudioProcessor::HelloSamplerAudioProcessor()
 #endif
 {
     mFormatManager.registerBasicFormats();
+    mAPVTS.state.addListener(this); // add a listener to the value tree inside 'this' processor
     
     for (int i = 0; i < mNumVoices; i++)
     {
@@ -148,6 +149,12 @@ void HelloSamplerAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
 
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
+    
+    if (mShouldUpdate)
+    {
+        updateADSR();
+        //mShouldUpdate = false;
+    }
 
     mSampler.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
 }
@@ -225,7 +232,12 @@ void HelloSamplerAudioProcessor::loadFile(const juce::String& pathToFile)
 }
 
 void HelloSamplerAudioProcessor::updateADSR()
-{    
+{
+    mADSRParams.attack = mAPVTS.getRawParameterValue("ATTACK")->load(); // load is what actually gets the value
+    mADSRParams.decay = mAPVTS.getRawParameterValue("DECAY")->load();
+    mADSRParams.sustain = mAPVTS.getRawParameterValue("SUSTAIN")->load();
+    mADSRParams.release = mAPVTS.getRawParameterValue("RELEASE")->load();
+    
     for (int i=0; i<mSampler.getNumSounds(); ++i)
     {
         // chec that these are sampler sounds not synthesisersounds
@@ -249,6 +261,12 @@ juce::AudioProcessorValueTreeState::ParameterLayout HelloSamplerAudioProcessor::
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>("RELEASE", "Release", 0.0f, 5.0f, 2.0f));
     
     return {parameters.begin(), parameters.end()};
+}
+
+// if anything changes in the value tree then we want to update
+void HelloSamplerAudioProcessor::valueTreePropertyChanged(juce::ValueTree &treeWhosePropertyHasChanged, const juce::Identifier &property)
+{
+    mShouldUpdate = true;
 }
 //==============================================================================
 // This creates new instances of the plugin..

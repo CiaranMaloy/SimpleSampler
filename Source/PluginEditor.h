@@ -15,7 +15,7 @@
 /**
 */
 class HelloSamplerAudioProcessorEditor  : public juce::AudioProcessorEditor,
-public juce::FileDragAndDropTarget, public juce::Slider::Listener
+public juce::FileDragAndDropTarget
 {
 public:
     HelloSamplerAudioProcessorEditor (HelloSamplerAudioProcessor&);

@@ -13,7 +13,7 @@
 //==============================================================================
 /**
 */
-class HelloSamplerAudioProcessor  : public juce::AudioProcessor
+class HelloSamplerAudioProcessor  : public juce::AudioProcessor, public juce::ValueTree::Listener
                             #if JucePlugin_Enable_ARA
                              , public juce::AudioProcessorARAExtension
                             #endif
@@ -80,6 +80,11 @@ private:
     juce::ADSR::Parameters mADSRParams;
     juce::AudioProcessorValueTreeState mAPVTS;
     juce::AudioProcessorValueTreeState::ParameterLayout createParameters();
+    void valueTreePropertyChanged (juce::ValueTree &treeWhosePropertyHasChanged, const juce::Identifier &property) override;
+    
+    // "an atomic variable is a way a type of protection that we can use in an audio callback where if we try to change or if we are trying to read if m should change but there could be a thread conflict then the atomic variable is protection against the thread conflict, you should read up on that"
+    // - Josh Hodge
+    std::atomic<bool> mShouldUpdate {false};
     
     juce::AudioFormatManager mFormatManager;
     juce::AudioFormatReader* mFormatReader {nullptr};
