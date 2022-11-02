@@ -19,7 +19,7 @@ HelloSamplerAudioProcessor::HelloSamplerAudioProcessor()
                       #endif
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
-                       )
+                       ), mAPVTS(*this, nullptr, "PARAMETERS", createParameters())
 #endif
 {
     mFormatManager.registerBasicFormats();
@@ -238,6 +238,18 @@ void HelloSamplerAudioProcessor::updateADSR()
     }
 }
 
+juce::AudioProcessorValueTreeState::ParameterLayout HelloSamplerAudioProcessor::createParameters()
+{
+    std::vector<std::unique_ptr<juce::RangedAudioParameter>> parameters; // jesus christ this is a lot of ypes
+    
+    // now what we need to do is create our parameters that we're going to get from the slider values
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>("ATTACK", "Attack", 0.0f, 5.0f, 0.0f));
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>("DECAY", "Decay", 0.0f, 3.0f, 0.0f));
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>("SUSTAIN", "Sustain", 0.0f, 1.0f, 1.0f));
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>("RELEASE", "Release", 0.0f, 5.0f, 2.0f));
+    
+    return {parameters.begin(), parameters.end()};
+}
 //==============================================================================
 // This creates new instances of the plugin..
 juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()

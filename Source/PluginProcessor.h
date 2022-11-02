@@ -69,6 +69,7 @@ public:
     void updateADSR();
     //float attack{0.0}, decay{0.0}, sustain{0.0}, release{0.0};
     juce::ADSR::Parameters& getADSRParams() { return mADSRParams;}
+    juce::AudioProcessorValueTreeState& getAPVTS() {return mAPVTS;}
 
 private:
     
@@ -77,6 +78,8 @@ private:
     juce::AudioBuffer<float> mWaveForm;
     
     juce::ADSR::Parameters mADSRParams;
+    juce::AudioProcessorValueTreeState mAPVTS;
+    juce::AudioProcessorValueTreeState::ParameterLayout createParameters();
     
     juce::AudioFormatManager mFormatManager;
     juce::AudioFormatReader* mFormatReader {nullptr};

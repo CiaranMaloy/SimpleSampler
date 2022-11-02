@@ -25,9 +25,9 @@ HelloSamplerAudioProcessorEditor::HelloSamplerAudioProcessorEditor (HelloSampler
     // Attack slider
     mAttackSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
     mAttackSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 50, 20);
-    mAttackSlider.setRange(0.0f, 5.0f, 0.01f); // alwasy set the increment because otherwise things get weird
+    //mAttackSlider.setRange(0.0f, 5.0f, 0.01f); // alwasy set the increment because otherwise things get weird
     mAttackSlider.setColour(juce::Slider::ColourIds::thumbColourId, juce::Colours::red);
-    mAttackSlider.addListener(this); // this refers to the editor and makes it a listener
+    //mAttackSlider.addListener(this); // this refers to the editor and makes it a listener
     addAndMakeVisible(mAttackSlider);
     
     mAttackLabel.setFont(10.f);
@@ -35,12 +35,15 @@ HelloSamplerAudioProcessorEditor::HelloSamplerAudioProcessorEditor (HelloSampler
     mAttackLabel.setJustificationType(juce::Justification::centredTop);
     mAttackLabel.attachToComponent(&mAttackSlider, false);
     
+    mAttackAttachment = // for some reason im going to stick with this weird formatting
+    std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.getAPVTS(), "Attack", mAttackSlider);
+    
     // Decay slider
     mDecaySlider.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
     mDecaySlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 50, 20);
-    mDecaySlider.setRange(0.0f, 5.0f, 0.01f); // alwasy set the increment because otherwise things get weird
+    //mDecaySlider.setRange(0.0f, 5.0f, 0.01f); // alwasy set the increment because otherwise things get weird
     mDecaySlider.setColour(juce::Slider::ColourIds::thumbColourId, juce::Colours::green);
-    mDecaySlider.addListener(this);
+    //mDecaySlider.addListener(this);
     addAndMakeVisible(mDecaySlider);
     
     mDecayLabel.setFont(10.f);
@@ -48,12 +51,15 @@ HelloSamplerAudioProcessorEditor::HelloSamplerAudioProcessorEditor (HelloSampler
     mDecayLabel.setJustificationType(juce::Justification::centredTop);
     mDecayLabel.attachToComponent(&mDecaySlider, false);
     
+    mDecayAttachment = // for some reason im going to stick with this weird formatting
+    std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.getAPVTS(), "Decay", mDecaySlider);
+    
     // Sustain
     mSustainSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
     mSustainSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 50, 20);
-    mSustainSlider.setRange(0.0f, 1.0f, 0.01f); // alwasy set the increment because otherwise things get weird
+    //mSustainSlider.setRange(0.0f, 1.0f, 0.01f); // alwasy set the increment because otherwise things get weird
     mSustainSlider.setColour(juce::Slider::ColourIds::thumbColourId, juce::Colours::blue);
-    mSustainSlider.addListener(this);
+    //mSustainSlider.addListener(this);
     addAndMakeVisible(mSustainSlider);
     
     mSustainLabel.setFont(10.f);
@@ -61,18 +67,24 @@ HelloSamplerAudioProcessorEditor::HelloSamplerAudioProcessorEditor (HelloSampler
     mSustainLabel.setJustificationType(juce::Justification::centredTop);
     mSustainLabel.attachToComponent(&mSustainSlider, false);
     
+    mSustainAttachment = // for some reason im going to stick with this weird formatting
+    std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.getAPVTS(), "Sustain", mSustainSlider);
+    
     // Release
     mReleaseSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
     mReleaseSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 50, 20);
-    mReleaseSlider.setRange(0.0f, 1.0f, 0.01f); // alwasy set the increment because otherwise things get weird
+    //mReleaseSlider.setRange(0.0f, 1.0f, 0.01f); // alwasy set the increment because otherwise things get weird
     mReleaseSlider.setColour(juce::Slider::ColourIds::thumbColourId, juce::Colours::yellow);
-    mReleaseSlider.addListener(this);
+    //mReleaseSlider.addListener(this);
     addAndMakeVisible(mReleaseSlider);
     
     mReleaseLabel.setFont(10.f);
     mReleaseLabel.setText("Release", juce::NotificationType::dontSendNotification);
     mReleaseLabel.setJustificationType(juce::Justification::centredTop);
     mReleaseLabel.attachToComponent(&mReleaseSlider, false);
+    
+    mReleaseAttachment = // for some reason im going to stick with this weird formatting
+    std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.getAPVTS(), "Release", mReleaseSlider);
     
     //addAndMakeVisible(mLoadButton);
     setSize (600, 200);
@@ -188,25 +200,25 @@ void HelloSamplerAudioProcessorEditor::filesDropped(const juce::StringArray &fil
     }
 }
 
-void HelloSamplerAudioProcessorEditor::sliderValueChanged(juce::Slider *slider)
-{
-    // you want to replace the slider listener stuff with an valueTreeState object 
-    if (slider == &mAttackSlider)
-    {
-        audioProcessor.getADSRParams().attack = mAttackSlider.getValue();
-    }
-    else if (slider == &mDecaySlider)
-    {
-        audioProcessor.getADSRParams().decay = mDecaySlider.getValue();
-    }
-    else if (slider == &mSustainSlider)
-    {
-        audioProcessor.getADSRParams().sustain = mSustainSlider.getValue();
-    }
-    else if (slider == &mReleaseSlider)
-    {
-        audioProcessor.getADSRParams().release = mReleaseSlider.getValue();
-    }
-    
-    audioProcessor.updateADSR();
-}
+//void HelloSamplerAudioProcessorEditor::sliderValueChanged(juce::Slider *slider)
+//{
+//    // you want to replace the slider listener stuff with an valueTreeState object
+//    if (slider == &mAttackSlider)
+//    {
+//        audioProcessor.getADSRParams().attack = mAttackSlider.getValue();
+//    }
+//    else if (slider == &mDecaySlider)
+//    {
+//        audioProcessor.getADSRParams().decay = mDecaySlider.getValue();
+//    }
+//    else if (slider == &mSustainSlider)
+//    {
+//        audioProcessor.getADSRParams().sustain = mSustainSlider.getValue();
+//    }
+//    else if (slider == &mReleaseSlider)
+//    {
+//        audioProcessor.getADSRParams().release = mReleaseSlider.getValue();
+//    }
+//
+//    audioProcessor.updateADSR();
+//}
