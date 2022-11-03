@@ -93,23 +93,16 @@ void ADSRComponent::paint (juce::Graphics& g)
        drawing code..
     */
 
-    g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));   // clear the background
+    g.fillAll (juce::Colours::black);   // clear the background
 
-    g.setColour (juce::Colours::grey);
-    g.drawRect (getLocalBounds(), 1);   // draw an outline around the component
-
-    g.setColour (juce::Colours::white);
-    g.setFont (14.0f);
-    g.drawText ("ADSRComponent", getLocalBounds(),
-                juce::Justification::centred, true);   // draw some placeholder text
 }
 
 void ADSRComponent::resized()
 {
     const auto startX = 0.6f;
-    const auto startY = 0.5f;
+    const auto startY = 0.2f;
     const auto dialWidth = 0.1f;
-    const auto dialHeight = 0.4f;
+    const auto dialHeight = 0.75f;
     
     mAttackSlider.setBoundsRelative(startX, startY, dialWidth, dialHeight);
     mDecaySlider.setBoundsRelative(startX + dialWidth, startY, dialWidth, dialHeight);

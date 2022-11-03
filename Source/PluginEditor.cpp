@@ -24,7 +24,7 @@ HelloSamplerAudioProcessorEditor::HelloSamplerAudioProcessorEditor (HelloSampler
     addAndMakeVisible(mWaveThumbnail);
     addAndMakeVisible(mADSR);
     //addAndMakeVisible(mLoadButton);
-    setSize (600, 200);
+    setSize (600, 400);
 }
 
 HelloSamplerAudioProcessorEditor::~HelloSamplerAudioProcessorEditor()
