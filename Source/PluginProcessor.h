@@ -70,6 +70,8 @@ public:
     //float attack{0.0}, decay{0.0}, sustain{0.0}, release{0.0};
     juce::ADSR::Parameters& getADSRParams() { return mADSRParams;}
     juce::AudioProcessorValueTreeState& getAPVTS() {return mAPVTS;}
+    std::atomic<bool>& isNotePlayed() {return mIsNotePlayed;}
+    std::atomic<int>& getSampleCount() {return mSampleCount;}
 
 private:
     
@@ -85,6 +87,9 @@ private:
     // "an atomic variable is a way a type of protection that we can use in an audio callback where if we try to change or if we are trying to read if m should change but there could be a thread conflict then the atomic variable is protection against the thread conflict, you should read up on that"
     // - Josh Hodge
     std::atomic<bool> mShouldUpdate {false};
+    std::atomic<bool> mIsNotePlayed {false};
+    // one of the key things about std::atomic is that is it a very heay
+    std::atomic<int> mSampleCount {0};
     
     juce::AudioFormatManager mFormatManager;
     juce::AudioFormatReader* mFormatReader {nullptr};

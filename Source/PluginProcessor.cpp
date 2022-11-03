@@ -155,6 +155,31 @@ void HelloSamplerAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
         updateADSR();
         //mShouldUpdate = false;
     }
+    
+    // 1. how do I know that there is a sound being played at all
+    // an earlier tutorial, a simple midi plugin
+    juce::MidiMessage m;
+    // midi buffer iterator
+    //::MidiBuffer::Iterator it { midiMessages };
+    int sample;
+    for (const auto meta : midiMessages) // I'll be impressed if this works
+    {
+        m = meta.getMessage();
+        if (m.isNoteOn())
+        {
+            // hey note is on, start the playhead
+            mIsNotePlayed = true;
+        }
+        else if (m.isNoteOff())
+        {
+            // stop the playhead
+            mIsNotePlayed = false;
+        }
+    }
+    
+    //DBG("Note : " << mIsNotePlayed);
+
+    mSampleCount = mIsNotePlayed ? mSampleCount += buffer.getNumSamples() : 0;
 
     mSampler.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
 }
