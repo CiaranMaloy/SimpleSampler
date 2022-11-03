@@ -14,13 +14,7 @@ HelloSamplerAudioProcessorEditor::HelloSamplerAudioProcessorEditor (HelloSampler
     : AudioProcessorEditor (&p), mWaveThumbnail (p), mADSR(p), audioProcessor (p)
 {
     
-    // Make sure that before the constructor has finished, you've set the
-    // editor's size to whatever you need it to be.
-    mLoadButton.onClick = [&]() {
-        // small function that is executed on click
-        audioProcessor.loadFile();
-    };
-    
+    startTimerHz(30);
     addAndMakeVisible(mWaveThumbnail);
     addAndMakeVisible(mADSR);
     //addAndMakeVisible(mLoadButton);
@@ -29,6 +23,7 @@ HelloSamplerAudioProcessorEditor::HelloSamplerAudioProcessorEditor (HelloSampler
 
 HelloSamplerAudioProcessorEditor::~HelloSamplerAudioProcessorEditor()
 {
+    stopTimer();
 }
 
 //==============================================================================
@@ -47,4 +42,9 @@ void HelloSamplerAudioProcessorEditor::resized()
     mWaveThumbnail.setBoundsRelative(0.0f, 0.25f, 1.0f, 0.5f);
     mADSR.setBoundsRelative(0.0f, 0.75f, 1.0f, 0.25f);
         
+}
+
+void HelloSamplerAudioProcessorEditor::timerCallback()
+{
+    repaint();
 }

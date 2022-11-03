@@ -161,7 +161,7 @@ void HelloSamplerAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
     juce::MidiMessage m;
     // midi buffer iterator
     //::MidiBuffer::Iterator it { midiMessages };
-    int sample;
+
     for (const auto meta : midiMessages) // I'll be impressed if this works
     {
         m = meta.getMessage();
