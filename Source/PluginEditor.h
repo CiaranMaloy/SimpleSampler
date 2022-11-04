@@ -36,6 +36,8 @@ private:
     
     WaveThumbnail mWaveThumbnail;
     ADSRComponent mADSR;
+    
+    juce::ImageComponent mImageComponent;
 
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.

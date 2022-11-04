@@ -13,10 +13,23 @@
 HelloSamplerAudioProcessorEditor::HelloSamplerAudioProcessorEditor (HelloSamplerAudioProcessor& p)
     : AudioProcessorEditor (&p), mWaveThumbnail (p), mADSR(p), audioProcessor (p)
 {
+    // acess image
+    auto exampleImage = juce::ImageCache::getFromMemory(BinaryData::exampleImage_png, BinaryData::exampleImage_pngSize);
+    
+    // put this on the screen using the image component
+    if (!exampleImage.isNull())
+    {
+        mImageComponent.setImage(exampleImage, juce::RectanglePlacement::stretchToFit);
+    }
+    else
+    {
+        jassert(! exampleImage.isNull());
+    }
     
     startTimerHz(30);
     addAndMakeVisible(mWaveThumbnail);
     addAndMakeVisible(mADSR);
+    addAndMakeVisible(mImageComponent);
     //addAndMakeVisible(mLoadButton);
     setSize (600, 400);
 }
@@ -41,6 +54,7 @@ void HelloSamplerAudioProcessorEditor::resized()
 {
     mWaveThumbnail.setBoundsRelative(0.0f, 0.25f, 1.0f, 0.5f);
     mADSR.setBoundsRelative(0.0f, 0.75f, 1.0f, 0.25f);
+    mImageComponent.setBoundsRelative(0.0f, 0.0f, 0.25f, 0.25f);
         
 }
 
